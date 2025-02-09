@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página de Inicio con rueditas y flechas</title>
+    <title>Mi Página de Inicio con casi todo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -108,19 +108,42 @@
     <div class="settings-button" onclick="openFileInput()">⚙</div>
     <input type="file" id="fileInput" accept="image/*" onchange="changeBackgroundFromFile(event)">
     <script>
-        function openFileInput() {
-            document.getElementById("fileInput").click();
+        const defaultLinks = [
+            { url: "https://www.youtube.com", icon: "https://logo.clearbit.com/youtube.com" },
+            { url: "https://www.twitch.tv", icon: "https://logo.clearbit.com/twitch.tv" },
+            { url: "https://www.wikipedia.org", icon: "https://logo.clearbit.com/wikipedia.org" },
+            { url: "https://pluto.tv", icon: "https://logo.clearbit.com/pluto.tv" },
+            { url: "https://www.plex.tv", icon: "https://logo.clearbit.com/plex.tv" },
+            { url: "https://www.netflix.com", icon: "https://logo.clearbit.com/netflix.com" },
+            { url: "https://www.crunchyroll.com", icon: "https://logo.clearbit.com/crunchyroll.com" }
+        ];
+
+        function loadIcons() {
+            let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+            const container = document.getElementById("icons-container");
+            container.innerHTML = "";
+            links.forEach((link, index) => {
+                const div = document.createElement("div");
+                div.classList.add("icon");
+                div.tabIndex = 0;
+                div.innerHTML = `<img src="${link.icon}" alt="icon" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'" onclick="location.href='${link.url}'">
+                                <div class="delete" onclick="deleteIcon(${index})">x</div>`;
+                container.appendChild(div);
+            });
+            const addDiv = document.createElement("div");
+            addDiv.classList.add("add-icon");
+            addDiv.textContent = "+";
+            addDiv.onclick = addIcon;
+            container.appendChild(addDiv);
         }
 
-        function changeBackgroundFromFile(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.body.style.backgroundImage = `url('${e.target.result}')`;
-                    localStorage.setItem("background", e.target.result);
-                };
-                reader.readAsDataURL(file);
+        function addIcon() {
+            const url = prompt("Introduce la URL del sitio:");
+            if (url) {
+                let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+                links.push({ url: url, icon: `https://logo.clearbit.com/${new URL(url).hostname}` });
+                localStorage.setItem("links", JSON.stringify(links));
+                loadIcons();
             }
         }
 
@@ -139,14 +162,7 @@
             }
         });
 
-        function loadBackground() {
-            const savedBackground = localStorage.getItem("background");
-            if (savedBackground) {
-                document.body.style.backgroundImage = `url('${savedBackground}')`;
-            }
-        }
-
-        loadBackground();
+        loadIcons();
     </script>
 </body>
 </html>
