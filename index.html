@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Página de Inicio con 3o mini high</title>
+  <title>Mi Página de Inicio modificada</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,9 +12,28 @@
       background-size: cover;
       transition: background 0.5s ease-in-out;
     }
+    /* Estilos mejorados para el buscador */
     .search-container {
-      margin: 20px;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 600px;
+      position: relative;
     }
+    .search-container input {
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      outline: none;
+    }
+    .search-container input:focus {
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+      transform: scale(1.02);
+    }
+    /* Resto de estilos para iconos y botones */
     .icons-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -113,7 +132,6 @@
     const defaultLinks = [
       { url: "https://www.youtube.com", icon: "https://logo.clearbit.com/youtube.com" },
       { url: "https://www.twitch.tv", icon: "https://logo.clearbit.com/twitch.tv" },
-      { url: "https://www.wikipedia.org", icon: "https://logo.clearbit.com/wikipedia.org" },
       { url: "https://pluto.tv", icon: "https://logo.clearbit.com/pluto.tv" },
       { url: "https://www.plex.tv", icon: "https://logo.clearbit.com/plex.tv" },
       { url: "https://www.netflix.com", icon: "https://logo.clearbit.com/netflix.com" },
