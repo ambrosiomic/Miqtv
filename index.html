@@ -3,43 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Página de Inicio modificada</title>
+  <title>Mi Página de Inicio firefox </title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
+      margin: 0;
+      padding: 0;
       background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center fixed;
       background-size: cover;
       transition: background 0.5s ease-in-out;
     }
-    /* Estilos mejorados para el buscador */
+    /* Estilos para el buscador similar al de Firefox */
     .search-container {
-      margin: 20px auto;
-      width: 80%;
-      max-width: 600px;
-      position: relative;
+      display: flex;
+      justify-content: center;
+      margin-top: 15vh; /* Ajusta la distancia desde la parte superior */
+      margin-bottom: 30px;
     }
     .search-container input {
-      width: 100%;
-      padding: 15px 20px;
+      width: 500px;
+      max-width: 90%;
+      padding: 15px 20px 15px 50px; /* Espacio para el icono de lupa */
       font-size: 18px;
       border: none;
-      border-radius: 30px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      border-radius: 25px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       outline: none;
+      background-color: #fff;
+      /* Se añade la imagen de la lupa */
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg');
+      background-size: 20px;
+      background-repeat: no-repeat;
+      background-position: 15px center;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
     }
     .search-container input:focus {
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       transform: scale(1.02);
     }
-    /* Resto de estilos para iconos y botones */
+    /* Estilos para los iconos de enlaces */
     .icons-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       gap: 20px;
       justify-content: center;
       padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
     }
     .icon {
       position: relative;
@@ -132,6 +143,7 @@
     const defaultLinks = [
       { url: "https://www.youtube.com", icon: "https://logo.clearbit.com/youtube.com" },
       { url: "https://www.twitch.tv", icon: "https://logo.clearbit.com/twitch.tv" },
+      { url: "https://www.wikipedia.org", icon: "https://logo.clearbit.com/wikipedia.org" },
       { url: "https://pluto.tv", icon: "https://logo.clearbit.com/pluto.tv" },
       { url: "https://www.plex.tv", icon: "https://logo.clearbit.com/plex.tv" },
       { url: "https://www.netflix.com", icon: "https://logo.clearbit.com/netflix.com" },
