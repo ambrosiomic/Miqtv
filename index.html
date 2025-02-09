@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página de Inicio</title>
+    <title>Mi Página de Inicio update</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,9 +28,11 @@
             height: 100px;
             cursor: pointer;
             transition: transform 0.2s ease-in-out;
+            outline: none;
         }
-        .icon:hover {
+        .icon:hover, .icon:focus {
             transform: scale(1.1);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.6);
         }
         .icon img {
             width: 100%;
@@ -78,7 +80,7 @@
     <div class="search-container">
         <input type="text" id="search" placeholder="Buscar en Google..." onkeydown="searchGoogle(event)">
     </div>
-    <div class="icons-container" id="icons-container">
+    <div class="icons-container" id="icons-container" tabindex="0">
         <!-- Los iconos se generarán dinámicamente aquí -->
     </div>
     <script>
@@ -99,6 +101,7 @@
             links.forEach((link, index) => {
                 const div = document.createElement("div");
                 div.classList.add("icon");
+                div.tabIndex = 0;
                 div.innerHTML = `<img src="${link.icon}" alt="icon" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'" onclick="location.href='${link.url}'">
                                 <div class="delete" onclick="deleteIcon(${index})">x</div>`;
                 container.appendChild(div);
@@ -132,6 +135,21 @@
                 window.location.href = `https://www.google.com/search?q=${event.target.value}`;
             }
         }
+
+        document.addEventListener("keydown", (event) => {
+            const icons = document.querySelectorAll(".icon");
+            if (!icons.length) return;
+
+            let index = [...icons].findIndex(icon => document.activeElement === icon);
+            if (event.key === "ArrowRight") {
+                index = (index + 1) % icons.length;
+                icons[index].focus();
+            }
+            if (event.key === "ArrowLeft") {
+                index = (index - 1 + icons.length) % icons.length;
+                icons[index].focus();
+            }
+        });
 
         loadIcons();
     </script>
