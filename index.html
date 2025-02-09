@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiqTV</title>
+    <title>Mi Página de Inicio</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -83,13 +83,13 @@
     </div>
     <script>
         const defaultLinks = [
-            { url: "https://www.youtube.com", icon: "https://www.youtube.com/s/desktop/255fef4c/img/favicon.ico" },
-            { url: "https://www.twitch.tv", icon: "https://static.twitchcdn.net/assets/favicon-32-e29e246c157142c94346.png" },
-            { url: "https://www.wikipedia.org", icon: "https://www.wikipedia.org/static/favicon/wikipedia.ico" },
-            { url: "https://pluto.tv", icon: "https://pluto.tv/favicon.ico" },
-            { url: "https://www.plex.tv", icon: "https://www.plex.tv/wp-content/uploads/2018/12/cropped-Plex_icon.svg" },
-            { url: "https://www.netflix.com", icon: "https://assets.nflxext.com/us/icons/nficon2016.ico" },
-            { url: "https://www.crunchyroll.com", icon: "https://www.crunchyroll.com/favicons/favicon.ico" }
+            { url: "https://www.youtube.com", icon: "https://logo.clearbit.com/youtube.com" },
+            { url: "https://www.twitch.tv", icon: "https://logo.clearbit.com/twitch.tv" },
+            { url: "https://www.wikipedia.org", icon: "https://logo.clearbit.com/wikipedia.org" },
+            { url: "https://pluto.tv", icon: "https://logo.clearbit.com/pluto.tv" },
+            { url: "https://www.plex.tv", icon: "https://logo.clearbit.com/plex.tv" },
+            { url: "https://www.netflix.com", icon: "https://logo.clearbit.com/netflix.com" },
+            { url: "https://www.crunchyroll.com", icon: "https://logo.clearbit.com/crunchyroll.com" }
         ];
 
         function loadIcons() {
@@ -99,7 +99,7 @@
             links.forEach((link, index) => {
                 const div = document.createElement("div");
                 div.classList.add("icon");
-                div.innerHTML = `<img src="${link.icon}" alt="icon" onclick="location.href='${link.url}'">
+                div.innerHTML = `<img src="${link.icon}" alt="icon" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'" onclick="location.href='${link.url}'">
                                 <div class="delete" onclick="deleteIcon(${index})">x</div>`;
                 container.appendChild(div);
             });
@@ -120,13 +120,10 @@
         function addIcon() {
             const url = prompt("Introduce la URL del sitio:");
             if (url) {
-                fetch(`https://www.google.com/s2/favicons?domain=${url}`)
-                    .then(() => {
-                        let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
-                        links.push({ url: url, icon: `https://www.google.com/s2/favicons?domain=${url}` });
-                        localStorage.setItem("links", JSON.stringify(links));
-                        loadIcons();
-                    });
+                let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+                links.push({ url: url, icon: `https://logo.clearbit.com/${new URL(url).hostname}` });
+                localStorage.setItem("links", JSON.stringify(links));
+                loadIcons();
             }
         }
 
