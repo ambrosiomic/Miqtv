@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiqTV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center fixed;
+            background-size: cover;
+            transition: background 0.5s ease-in-out;
+        }
+        .search-container {
+            margin: 20px;
+        }
+        .icons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+        .icon {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        .icon:hover {
+            transform: scale(1.1);
+        }
+        .icon img {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .icon .delete {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .icon:hover .delete {
+            opacity: 1;
+        }
+        .add-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 32px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease-in-out;
+        }
+        .add-icon:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Buscar en Google..." onkeydown="searchGoogle(event)">
+    </div>
+    <div class="icons-container" id="icons-container">
+        <!-- Los iconos se generarán dinámicamente aquí -->
+    </div>
+    <script>
+        const defaultLinks = [
+            { url: "https://www.youtube.com", icon: "https://www.youtube.com/s/desktop/255fef4c/img/favicon.ico" },
+            { url: "https://www.twitch.tv", icon: "https://static.twitchcdn.net/assets/favicon-32-e29e246c157142c94346.png" },
+            { url: "https://www.wikipedia.org", icon: "https://www.wikipedia.org/static/favicon/wikipedia.ico" },
+            { url: "https://pluto.tv", icon: "https://pluto.tv/favicon.ico" },
+            { url: "https://www.plex.tv", icon: "https://www.plex.tv/wp-content/uploads/2018/12/cropped-Plex_icon.svg" },
+            { url: "https://www.netflix.com", icon: "https://assets.nflxext.com/us/icons/nficon2016.ico" },
+            { url: "https://www.crunchyroll.com", icon: "https://www.crunchyroll.com/favicons/favicon.ico" }
+        ];
+
+        function loadIcons() {
+            const container = document.getElementById("icons-container");
+            container.innerHTML = "";
+            let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+            links.forEach((link, index) => {
+                const div = document.createElement("div");
+                div.classList.add("icon");
+                div.innerHTML = `<img src="${link.icon}" alt="icon" onclick="location.href='${link.url}'">
+                                <div class="delete" onclick="deleteIcon(${index})">x</div>`;
+                container.appendChild(div);
+            });
+            const addDiv = document.createElement("div");
+            addDiv.classList.add("add-icon");
+            addDiv.textContent = "+";
+            addDiv.onclick = addIcon;
+            container.appendChild(addDiv);
+        }
+
+        function deleteIcon(index) {
+            let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+            links.splice(index, 1);
+            localStorage.setItem("links", JSON.stringify(links));
+            loadIcons();
+        }
+
+        function addIcon() {
+            const url = prompt("Introduce la URL del sitio:");
+            if (url) {
+                fetch(`https://www.google.com/s2/favicons?domain=${url}`)
+                    .then(() => {
+                        let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+                        links.push({ url: url, icon: `https://www.google.com/s2/favicons?domain=${url}` });
+                        localStorage.setItem("links", JSON.stringify(links));
+                        loadIcons();
+                    });
+            }
+        }
+
+        function searchGoogle(event) {
+            if (event.key === "Enter") {
+                window.location.href = `https://www.google.com/search?q=${event.target.value}`;
+            }
+        }
+
+        loadIcons();
+    </script>
+</body>
+</html>
