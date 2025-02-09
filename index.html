@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página de Inicio con ruedita</title>
+    <title>Mi Página de Inicio con rueditas y flechas</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -93,6 +93,9 @@
         .settings-button:hover {
             background: rgba(255, 255, 255, 1);
         }
+        #fileInput {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -102,52 +105,39 @@
     <div class="icons-container" id="icons-container" tabindex="0">
         <!-- Los iconos se generarán dinámicamente aquí -->
     </div>
-    <div class="settings-button" onclick="changeBackground()">⚙</div>
+    <div class="settings-button" onclick="openFileInput()">⚙</div>
+    <input type="file" id="fileInput" accept="image/*" onchange="changeBackgroundFromFile(event)">
     <script>
-        const defaultLinks = [
-            { url: "https://www.youtube.com", icon: "https://logo.clearbit.com/youtube.com" },
-            { url: "https://www.twitch.tv", icon: "https://logo.clearbit.com/twitch.tv" },
-            { url: "https://www.wikipedia.org", icon: "https://logo.clearbit.com/wikipedia.org" },
-            { url: "https://pluto.tv", icon: "https://logo.clearbit.com/pluto.tv" },
-            { url: "https://www.plex.tv", icon: "https://logo.clearbit.com/plex.tv" },
-            { url: "https://www.netflix.com", icon: "https://logo.clearbit.com/netflix.com" },
-            { url: "https://www.crunchyroll.com", icon: "https://logo.clearbit.com/crunchyroll.com" }
-        ];
-
-        function loadIcons() {
-            let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
-            const container = document.getElementById("icons-container");
-            container.innerHTML = "";
-            links.forEach((link, index) => {
-                const div = document.createElement("div");
-                div.classList.add("icon");
-                div.tabIndex = 0;
-                div.innerHTML = `<img src="${link.icon}" alt="icon" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'" onclick="location.href='${link.url}'">
-                                <div class="delete" onclick="deleteIcon(${index})">x</div>`;
-                container.appendChild(div);
-            });
+        function openFileInput() {
+            document.getElementById("fileInput").click();
         }
 
-        function deleteIcon(index) {
-            let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
-            links.splice(index, 1);
-            localStorage.setItem("links", JSON.stringify(links));
-            loadIcons();
-        }
-
-        function changeBackground() {
-            const newBackground = prompt("Introduce la URL de la nueva imagen de fondo:");
-            if (newBackground) {
-                document.body.style.backgroundImage = `url('${newBackground}')`;
-                localStorage.setItem("background", newBackground);
+        function changeBackgroundFromFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.body.style.backgroundImage = `url('${e.target.result}')`;
+                    localStorage.setItem("background", e.target.result);
+                };
+                reader.readAsDataURL(file);
             }
         }
 
-        function searchGoogle(event) {
-            if (event.key === "Enter") {
-                window.location.href = `https://www.google.com/search?q=${event.target.value}`;
+        document.addEventListener("keydown", (event) => {
+            const icons = document.querySelectorAll(".icon");
+            if (!icons.length) return;
+
+            let index = [...icons].findIndex(icon => document.activeElement === icon);
+            if (event.key === "ArrowRight") {
+                index = (index + 1) % icons.length;
+                icons[index].focus();
             }
-        }
+            if (event.key === "ArrowLeft") {
+                index = (index - 1 + icons.length) % icons.length;
+                icons[index].focus();
+            }
+        });
 
         function loadBackground() {
             const savedBackground = localStorage.getItem("background");
@@ -157,7 +147,6 @@
         }
 
         loadBackground();
-        loadIcons();
     </script>
 </body>
 </html>
