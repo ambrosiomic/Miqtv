@@ -1,168 +1,222 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página de Inicio con casi todo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center fixed;
-            background-size: cover;
-            transition: background 0.5s ease-in-out;
-        }
-        .search-container {
-            margin: 20px;
-        }
-        .icons-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 20px;
-            justify-content: center;
-            padding: 20px;
-        }
-        .icon {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out;
-            outline: none;
-        }
-        .icon:hover, .icon:focus {
-            transform: scale(1.1);
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.6);
-        }
-        .icon img {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        }
-        .icon .delete {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: red;
-            color: white;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            line-height: 24px;
-            text-align: center;
-            font-size: 16px;
-            cursor: pointer;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .icon:hover .delete {
-            opacity: 1;
-        }
-        .add-icon {
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 32px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease-in-out;
-        }
-        .add-icon:hover {
-            transform: scale(1.1);
-        }
-        .settings-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 24px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            transition: background 0.3s ease-in-out;
-        }
-        .settings-button:hover {
-            background: rgba(255, 255, 255, 1);
-        }
-        #fileInput {
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Página de Inicio con 3o mini high</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center fixed;
+      background-size: cover;
+      transition: background 0.5s ease-in-out;
+    }
+    .search-container {
+      margin: 20px;
+    }
+    .icons-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .icon {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+      outline: none;
+    }
+    .icon:hover, .icon:focus {
+      transform: scale(1.1);
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.6);
+    }
+    .icon img {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .icon .delete {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: opacity 0.3s ease-in-out;
+      opacity: 0;
+    }
+    .icon:hover .delete {
+      opacity: 1;
+    }
+    .add-icon {
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 32px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease-in-out;
+    }
+    .add-icon:hover {
+      transform: scale(1.1);
+    }
+    .settings-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 24px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s ease-in-out;
+    }
+    .settings-button:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+    #fileInput {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="search-container">
-        <input type="text" id="search" placeholder="Buscar en Google..." onkeydown="searchGoogle(event)">
-    </div>
-    <div class="icons-container" id="icons-container" tabindex="0">
-        <!-- Los iconos se generarán dinámicamente aquí -->
-    </div>
-    <div class="settings-button" onclick="openFileInput()">⚙</div>
-    <input type="file" id="fileInput" accept="image/*" onchange="changeBackgroundFromFile(event)">
-    <script>
-        const defaultLinks = [
-            { url: "https://www.youtube.com", icon: "https://logo.clearbit.com/youtube.com" },
-            { url: "https://www.twitch.tv", icon: "https://logo.clearbit.com/twitch.tv" },
-            { url: "https://www.wikipedia.org", icon: "https://logo.clearbit.com/wikipedia.org" },
-            { url: "https://pluto.tv", icon: "https://logo.clearbit.com/pluto.tv" },
-            { url: "https://www.plex.tv", icon: "https://logo.clearbit.com/plex.tv" },
-            { url: "https://www.netflix.com", icon: "https://logo.clearbit.com/netflix.com" },
-            { url: "https://www.crunchyroll.com", icon: "https://logo.clearbit.com/crunchyroll.com" }
-        ];
+  <div class="search-container">
+    <input type="text" id="search" placeholder="Buscar en Google..." onkeydown="searchGoogle(event)">
+  </div>
+  <div class="icons-container" id="icons-container" tabindex="0">
+    <!-- Los iconos se generarán dinámicamente aquí -->
+  </div>
+  <div class="settings-button" onclick="openFileInput()">⚙</div>
+  <input type="file" id="fileInput" accept="image/*" onchange="changeBackgroundFromFile(event)">
 
-        function loadIcons() {
-            let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
-            const container = document.getElementById("icons-container");
-            container.innerHTML = "";
-            links.forEach((link, index) => {
-                const div = document.createElement("div");
-                div.classList.add("icon");
-                div.tabIndex = 0;
-                div.innerHTML = `<img src="${link.icon}" alt="icon" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'" onclick="location.href='${link.url}'">
-                                <div class="delete" onclick="deleteIcon(${index})">x</div>`;
-                container.appendChild(div);
-            });
-            const addDiv = document.createElement("div");
-            addDiv.classList.add("add-icon");
-            addDiv.textContent = "+";
-            addDiv.onclick = addIcon;
-            container.appendChild(addDiv);
+  <script>
+    const defaultLinks = [
+      { url: "https://www.youtube.com", icon: "https://logo.clearbit.com/youtube.com" },
+      { url: "https://www.twitch.tv", icon: "https://logo.clearbit.com/twitch.tv" },
+      { url: "https://www.wikipedia.org", icon: "https://logo.clearbit.com/wikipedia.org" },
+      { url: "https://pluto.tv", icon: "https://logo.clearbit.com/pluto.tv" },
+      { url: "https://www.plex.tv", icon: "https://logo.clearbit.com/plex.tv" },
+      { url: "https://www.netflix.com", icon: "https://logo.clearbit.com/netflix.com" },
+      { url: "https://www.crunchyroll.com", icon: "https://logo.clearbit.com/crunchyroll.com" }
+    ];
+
+    // Carga y muestra los iconos
+    function loadIcons() {
+      let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+      const container = document.getElementById("icons-container");
+      container.innerHTML = "";
+      links.forEach((link, index) => {
+        const div = document.createElement("div");
+        div.classList.add("icon");
+        div.tabIndex = 0;
+        div.innerHTML = `
+          <img src="${link.icon}" alt="icon" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'" onclick="location.href='${link.url}'">
+          <div class="delete" onclick="event.stopPropagation(); deleteIcon(${index})">x</div>
+        `;
+        container.appendChild(div);
+      });
+      // Añade el icono para agregar nuevos enlaces
+      const addDiv = document.createElement("div");
+      addDiv.classList.add("add-icon");
+      addDiv.textContent = "+";
+      addDiv.onclick = addIcon;
+      container.appendChild(addDiv);
+    }
+
+    // Añade un nuevo icono
+    function addIcon() {
+      const url = prompt("Introduce la URL del sitio:");
+      if (url) {
+        let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+        try {
+          // Se obtiene el hostname para construir la URL del icono
+          const hostname = new URL(url).hostname;
+          links.push({ url: url, icon: `https://logo.clearbit.com/${hostname}` });
+          localStorage.setItem("links", JSON.stringify(links));
+          loadIcons();
+        } catch (e) {
+          alert("URL no válida.");
         }
+      }
+    }
 
-        function addIcon() {
-            const url = prompt("Introduce la URL del sitio:");
-            if (url) {
-                let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
-                links.push({ url: url, icon: `https://logo.clearbit.com/${new URL(url).hostname}` });
-                localStorage.setItem("links", JSON.stringify(links));
-                loadIcons();
-            }
-        }
-
-        document.addEventListener("keydown", (event) => {
-            const icons = document.querySelectorAll(".icon");
-            if (!icons.length) return;
-
-            let index = [...icons].findIndex(icon => document.activeElement === icon);
-            if (event.key === "ArrowRight") {
-                index = (index + 1) % icons.length;
-                icons[index].focus();
-            }
-            if (event.key === "ArrowLeft") {
-                index = (index - 1 + icons.length) % icons.length;
-                icons[index].focus();
-            }
-        });
-
+    // Elimina un icono dado su índice
+    function deleteIcon(index) {
+      let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
+      if (confirm("¿Deseas eliminar este icono?")) {
+        links.splice(index, 1);
+        localStorage.setItem("links", JSON.stringify(links));
         loadIcons();
-    </script>
+      }
+    }
+
+    // Función para buscar en Google al presionar Enter
+    function searchGoogle(event) {
+      if (event.key === "Enter") {
+        const query = document.getElementById("search").value;
+        if(query.trim() !== ""){
+          window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(query);
+        }
+      }
+    }
+
+    // Abre el selector de archivos para cambiar el fondo
+    function openFileInput() {
+      document.getElementById("fileInput").click();
+    }
+
+    // Cambia el fondo de la página a partir de un archivo seleccionado
+    function changeBackgroundFromFile(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.body.style.background = `url('${e.target.result}') no-repeat center center fixed`;
+          document.body.style.backgroundSize = 'cover';
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Navegación entre iconos con las flechas del teclado
+    document.addEventListener("keydown", (event) => {
+      const icons = document.querySelectorAll(".icon");
+      if (!icons.length) return;
+
+      let index = [...icons].findIndex(icon => document.activeElement === icon);
+      
+      if (event.key === "ArrowRight") {
+        index = (index + 1) % icons.length;
+        icons[index].focus();
+      }
+      if (event.key === "ArrowLeft") {
+        index = (index - 1 + icons.length) % icons.length;
+        icons[index].focus();
+      }
+    });
+
+    // Inicializa la carga de iconos
+    loadIcons();
+  </script>
 </body>
 </html>
