@@ -2,251 +2,767 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Página de Inicio firefox </title>
+  <title>Página Home estilo Firefox</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
+    /* Reset y estilos base */
+    * {
       margin: 0;
       padding: 0;
-      background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center fixed;
-      background-size: cover;
-      transition: background 0.5s ease-in-out;
+      box-sizing: border-box;
     }
-    /* Estilos para el buscador similar al de Firefox */
-    .search-container {
+    body, html {
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    #container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    /* Fondo de la página con transición suave */
+    #background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #76C1FF;
+      z-index: -1;
+      transition: background-color 0.5s ease, background-image 0.5s ease;
+    }
+    /* Contenido principal */
+    #content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      color: #000;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #000;
+    }
+    /* Contenedor del buscador */
+    #search-container {
+      max-width: 800px;
+      margin: 0 auto 40px auto;
       display: flex;
-      justify-content: center;
-      margin-top: 15vh; /* Ajusta la distancia desde la parte superior */
-      margin-bottom: 30px;
+      gap: 10px;
+      align-items: center;
     }
-    .search-container input {
-      width: 500px;
-      max-width: 90%;
-      padding: 15px 20px 15px 50px; /* Espacio para el icono de lupa */
+    /* Formulario del buscador */
+    #searchForm {
+      flex: 1;
+    }
+    /* El input es focusable y se le añade tabindex en el HTML */
+    #searchInput {
+      width: 100%;
+      height: 50px;
+      padding: 0 20px;
       font-size: 18px;
       border: none;
-      border-radius: 25px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      background-color: #42414d;
+      color: #fff;
+    }
+    #searchInput:focus {
       outline: none;
-      background-color: #fff;
-      /* Se añade la imagen de la lupa */
-      background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg');
-      background-size: 20px;
-      background-repeat: no-repeat;
-      background-position: 15px center;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
     }
-    .search-container input:focus {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      transform: scale(1.02);
-    }
-    /* Estilos para los iconos de enlaces */
-    .icons-container {
+    /* Sección de accesos directos */
+    #shortcuts {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 20px;
-      justify-content: center;
-      padding: 20px;
       max-width: 800px;
       margin: 0 auto;
     }
-    .icon {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out;
-      outline: none;
-    }
-    .icon:hover, .icon:focus {
-      transform: scale(1.1);
-      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.6);
-    }
-    .icon img {
-      width: 100%;
-      height: 100%;
-      border-radius: 12px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    }
-    .icon .delete {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: red;
-      color: white;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
+    .shortcut {
+      position: relative; /* Para posicionar el botón de borrado */
       text-align: center;
-      font-size: 16px;
       cursor: pointer;
-      transition: opacity 0.3s ease-in-out;
-      opacity: 0;
+      /* Se añadirá tabindex="0" dinámicamente */
     }
-    .icon:hover .delete {
-      opacity: 1;
-    }
-    .add-icon {
-      width: 100px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.2);
+    .shortcut-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+      background: #42414d;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
+      transition: background 0.3s;
+    }
+    .shortcut-icon:hover {
+      background: #5a585f;
+    }
+    .shortcut-icon img {
+      max-width: 60%;
+      max-height: 60%;
+    }
+    .shortcut span {
+      margin-top: 8px;
+      display: block;
+      font-size: 14px;
+      color: #000;
+    }
+    /* Botón de borrado para cada shortcut */
+    .deleteShortcut {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(255, 0, 0, 0.8);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
       cursor: pointer;
-      font-size: 32px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-      transition: transform 0.2s ease-in-out;
+      display: none;
+      z-index: 2;
     }
-    .add-icon:hover {
-      transform: scale(1.1);
+    .shortcut:hover .deleteShortcut {
+      display: block;
     }
-    .settings-button {
+    /* Botón (ruedita) para abrir el menú lateral */
+    #customizeBtn {
       position: fixed;
       bottom: 20px;
       right: 20px;
+      background-color: #42414d;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    #customizeBtn:hover {
+      background-color: #5a585f;
+    }
+    #customizeBtn svg {
+      fill: #fff;
+      width: 28px;
+      height: 28px;
+    }
+    /* Menú lateral para elegir fondo y motor de búsqueda */
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: #fff;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+      transition: right 0.3s ease;
+      z-index: 5;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    #sideMenu.open {
+      right: 0;
+    }
+    .menuHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .menuHeader h2 {
+      font-size: 20px;
+    }
+    /* Hacemos focusable el botón de cerrar el menú */
+    #closeMenuBtn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .menuSection {
+      margin-bottom: 20px;
+    }
+    .menuSection h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .colorOptions, .imageOptions, .engineOptions {
+      display: flex;
+      gap: 10px;
+    }
+    .colorOption {
       width: 40px;
       height: 40px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 50%;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid #ccc;
+    }
+    .colorOption:hover {
+      border-color: #000;
+    }
+    .imageOption {
+      cursor: pointer;
+    }
+    .imageOption img {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+    }
+    .imageOption:hover img {
+      border-color: #000;
+    }
+    /* Estilos para opciones de motor de búsqueda en el menú lateral */
+    .engineOption {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      background-color: #42414d;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 24px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-      transition: background 0.3s ease-in-out;
+      border: 2px solid transparent;
+      transition: border 0.3s;
     }
-    .settings-button:hover {
-      background: rgba(255, 255, 255, 1);
+    .engineOption.selected {
+      border-color: #007BFF;
     }
-    #fileInput {
-      display: none;
+    .engineOption:hover {
+      border-color: #5a585f;
+    }
+    .engineOption img {
+      width: 32px;
+      height: 32px;
     }
   </style>
 </head>
 <body>
-  <div class="search-container">
-    <input type="text" id="search" placeholder="Buscar en Google..." onkeydown="searchGoogle(event)">
-  </div>
-  <div class="icons-container" id="icons-container" tabindex="0">
-    <!-- Los iconos se generarán dinámicamente aquí -->
-  </div>
-  <div class="settings-button" onclick="openFileInput()">⚙</div>
-  <input type="file" id="fileInput" accept="image/*" onchange="changeBackgroundFromFile(event)">
-
-  <script>
-    const defaultLinks = [
-      { url: "https://www.youtube.com", icon: "https://logo.clearbit.com/youtube.com" },
-      { url: "https://www.twitch.tv", icon: "https://logo.clearbit.com/twitch.tv" },
-      { url: "https://www.wikipedia.org", icon: "https://logo.clearbit.com/wikipedia.org" },
-      { url: "https://pluto.tv", icon: "https://logo.clearbit.com/pluto.tv" },
-      { url: "https://www.plex.tv", icon: "https://logo.clearbit.com/plex.tv" },
-      { url: "https://www.netflix.com", icon: "https://logo.clearbit.com/netflix.com" },
-      { url: "https://www.crunchyroll.com", icon: "https://logo.clearbit.com/crunchyroll.com" }
-    ];
-
-    // Carga y muestra los iconos
-    function loadIcons() {
-      let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
-      const container = document.getElementById("icons-container");
-      container.innerHTML = "";
-      links.forEach((link, index) => {
-        const div = document.createElement("div");
-        div.classList.add("icon");
-        div.tabIndex = 0;
-        div.innerHTML = `
-          <img src="${link.icon}" alt="icon" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'" onclick="location.href='${link.url}'">
-          <div class="delete" onclick="event.stopPropagation(); deleteIcon(${index})">x</div>
-        `;
-        container.appendChild(div);
-      });
-      // Añade el icono para agregar nuevos enlaces
-      const addDiv = document.createElement("div");
-      addDiv.classList.add("add-icon");
-      addDiv.textContent = "+";
-      addDiv.onclick = addIcon;
-      container.appendChild(addDiv);
-    }
-
-    // Añade un nuevo icono
-    function addIcon() {
-      const url = prompt("Introduce la URL del sitio:");
-      if (url) {
-        let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
-        try {
-          // Se obtiene el hostname para construir la URL del icono
-          const hostname = new URL(url).hostname;
-          links.push({ url: url, icon: `https://logo.clearbit.com/${hostname}` });
-          localStorage.setItem("links", JSON.stringify(links));
-          loadIcons();
-        } catch (e) {
-          alert("URL no válida.");
-        }
-      }
-    }
-
-    // Elimina un icono dado su índice
-    function deleteIcon(index) {
-      let links = JSON.parse(localStorage.getItem("links")) || defaultLinks;
-      if (confirm("¿Deseas eliminar este icono?")) {
-        links.splice(index, 1);
-        localStorage.setItem("links", JSON.stringify(links));
-        loadIcons();
-      }
-    }
-
-    // Función para buscar en Google al presionar Enter
-    function searchGoogle(event) {
-      if (event.key === "Enter") {
-        const query = document.getElementById("search").value;
-        if(query.trim() !== ""){
-          window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(query);
-        }
-      }
-    }
-
-    // Abre el selector de archivos para cambiar el fondo
-    function openFileInput() {
-      document.getElementById("fileInput").click();
-    }
-
-    // Cambia el fondo de la página a partir de un archivo seleccionado
-    function changeBackgroundFromFile(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.body.style.background = `url('${e.target.result}') no-repeat center center fixed`;
-          document.body.style.backgroundSize = 'cover';
-        }
-        reader.readAsDataURL(file);
-      }
-    }
-
-    // Navegación entre iconos con las flechas del teclado
-    document.addEventListener("keydown", (event) => {
-      const icons = document.querySelectorAll(".icon");
-      if (!icons.length) return;
-
-      let index = [...icons].findIndex(icon => document.activeElement === icon);
+  <div id="container">
+    <!-- Fondo de la página -->
+    <div id="background"></div>
+    
+    <!-- Contenido principal -->
+    <div id="content">
+      <h1>Mi Página Home</h1>
       
-      if (event.key === "ArrowRight") {
-        index = (index + 1) % icons.length;
-        icons[index].focus();
+      <!-- Buscador (solo formulario) -->
+      <div id="search-container">
+        <form id="searchForm" style="flex: 1;" aria-label="Formulario de búsqueda">
+          <input type="text" id="searchInput" tabindex="0" placeholder="Buscar en la web..." aria-label="Buscar en la web">
+        </form>
+      </div>
+      
+      <!-- Sección de accesos directos -->
+      <div id="shortcuts">
+        <!-- Los accesos se generarán dinámicamente -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- Menú lateral para elegir fondo y motor de búsqueda -->
+  <div id="sideMenu" aria-label="Menú de selección de fondo y motor de búsqueda">
+    <div class="menuHeader">
+      <h2>Background</h2>
+      <button id="closeMenuBtn" title="Cerrar Menú" aria-label="Cerrar Menú" tabindex="0">&times;</button>
+    </div>
+    <div class="menuSection">
+      <h3>Colors</h3>
+      <div class="colorOptions">
+        <div class="colorOption" data-bg-type="color" data-bg-value="#76C1FF" style="background-color: #76C1FF;" title="#76C1FF" tabindex="0"></div>
+        <div class="colorOption" data-bg-type="color" data-bg-value="#FF9A3D" style="background-color: #FF9A3D;" title="#FF9A3D" tabindex="0"></div>
+        <div class="colorOption" data-bg-type="color" data-bg-value="#A9A9A9" style="background-color: #A9A9A9;" title="#A9A9A9" tabindex="0"></div>
+      </div>
+    </div>
+    <div class="menuSection">
+      <h3>Photos</h3>
+      <div class="imageOptions">
+        <div class="imageOption" data-bg-type="image" data-bg-value="https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3" tabindex="0">
+          <img src="https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Mountain">
+        </div>
+        <div class="imageOption" data-bg-type="image" data-bg-value="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3" tabindex="0">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Beach">
+        </div>
+        <div class="imageOption" data-bg-type="image" data-bg-value="https://images.unsplash.com/photo-1506606401543-2e73709cebb4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3" tabindex="0">
+          <img src="https://images.unsplash.com/photo-1506606401543-2e73709cebb4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3" alt="City">
+        </div>
+      </div>
+    </div>
+    <!-- Sección para la elección del motor de búsqueda -->
+    <div class="menuSection">
+      <h3>Motor de búsqueda</h3>
+      <div class="engineOptions">
+        <div class="engineOption" data-engine="google" title="Google" tabindex="0">
+          <img src="https://images.squarespace-cdn.com/content/5fcd5a79c6682d375c888f6e/1648784947706-GVBCFSKNPFQA69XEMNM4/google+logo+trans+bg+expanded+2.png?format=1500w&content-type=image%2Fpng" alt="Google">
+        </div>
+        <div class="engineOption" data-engine="duckduckgo" title="DuckDuckGo" tabindex="0">
+          <img src="https://upload.wikimedia.org/wikipedia/en/9/90/The_DuckDuckGo_Duck.png" alt="DuckDuckGo">
+        </div>
+        <div class="engineOption" data-engine="bing" title="Bing" tabindex="0">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Bing_Logo.svg" alt="Bing">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Botón (ruedita) para abrir el menú lateral -->
+  <button id="customizeBtn" title="Cambiar Fondo" aria-label="Cambiar Fondo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M19.14,12.94a7.14,7.14,0,0,0,.05-.94,7.14,7.14,0,0,0-.05-.94l2.11-1.65a.5.5,0,0,0,.12-.63l-2-3.46a.5.5,0,0,0-.61-.22l-2.49,1a7.16,7.16,0,0,0-1.63-.94L14.5,2.81a.5.5,0,0,0-.5-.41H10a.5.5,0,0,0-.5.41L9.09,5.05a7.16,7.16,0,0,0-1.63.94l-2.49-1a.5.5,0,0,0-.61.22l-2,3.46a.5.5,0,0,0,.12.63L4.86,11.06a7.14,7.14,0,0,0-.05.94,7.14,7.14,0,0,0,.05.94L2.75,14.59a.5.5,0,0,0-.12.63l2,3.46a.5.5,0,0,0,.61.22l2.49-1a7.16,7.16,0,0,0,1.63.94L9.5,21.19a.5.5,0,0,0,.5.41h4a.5.5,0,0,0,.5-.41l.41-2.24a7.16,7.16,0,0,0,1.63-.94l2.49,1a.5.5,0,0,0,.61-.22l2-3.46a.5.5,0,0,0-.12-.63ZM12,15.5A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/>
+    </svg>
+  </button>
+  
+  <script>
+    /* =====================================
+       Funciones para cargar, guardar y renderizar shortcuts
+       ===================================== */
+    let shortcutsData = [];
+    
+    function loadShortcuts() {
+      const stored = localStorage.getItem('shortcutsData');
+      if (stored) {
+        shortcutsData = JSON.parse(stored);
+      } else {
+        shortcutsData = [
+          { name: "YouTube", url: "https://www.youtube.com" },
+          { name: "Twitch", url: "https://www.twitch.tv" },
+          { name: "Plex", url: "https://www.plex.tv/es/" },
+          { name: "PlutoTv", url: "https://pluto.tv" },
+          { name: "VikiTv", url: "https://www.viki.com" },
+          { name: "Netflix", url: "https://www.netflix.com" },
+          { name: "Crunchyroll", url: "https://www.crunchyroll.com" },
+          { name: "Kick", url: "https://www.kick.com" }
+        ];
+        saveShortcuts();
       }
-      if (event.key === "ArrowLeft") {
-        index = (index - 1 + icons.length) % icons.length;
-        icons[index].focus();
+    }
+    
+    function saveShortcuts() {
+      localStorage.setItem('shortcutsData', JSON.stringify(shortcutsData));
+    }
+    
+    function renderShortcuts() {
+      const container = document.getElementById('shortcuts');
+      container.innerHTML = "";
+      shortcutsData.forEach((item, index) => {
+        const shortcutEl = document.createElement('div');
+        shortcutEl.classList.add('shortcut');
+        shortcutEl.setAttribute('tabindex', '0');
+        shortcutEl.addEventListener('click', () => {
+          window.location.href = item.url;
+        });
+        // Abrir el link con Enter
+        shortcutEl.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            window.location.href = item.url;
+          }
+        });
+    
+        const iconContainer = document.createElement('div');
+        iconContainer.classList.add('shortcut-icon');
+        const faviconURL = `https://www.google.com/s2/favicons?sz=64&domain_url=${item.url}`;
+        const imgEl = document.createElement('img');
+        imgEl.src = faviconURL;
+        imgEl.alt = item.name;
+        iconContainer.appendChild(imgEl);
+    
+        shortcutEl.appendChild(iconContainer);
+    
+        const spanEl = document.createElement('span');
+        spanEl.textContent = item.name;
+        shortcutEl.appendChild(spanEl);
+    
+        // Botón para borrar el link
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('deleteShortcut');
+        deleteBtn.textContent = "×";
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (confirm("¿Estás seguro de borrar este link?")) {
+            deleteShortcut(index);
+          }
+        });
+        shortcutEl.appendChild(deleteBtn);
+    
+        container.appendChild(shortcutEl);
+      });
+      // Botón para añadir nuevos links
+      const addShortcutEl = document.createElement('div');
+      addShortcutEl.classList.add('shortcut', 'add-shortcut');
+      addShortcutEl.setAttribute('tabindex', '0');
+      addShortcutEl.addEventListener('click', addShortcut);
+      addShortcutEl.addEventListener('keydown', function(e) {
+        if(e.key === 'Enter') {
+          addShortcut();
+        }
+      });
+    
+      const addIconContainer = document.createElement('div');
+      addIconContainer.classList.add('shortcut-icon');
+      addIconContainer.textContent = "+";
+      addIconContainer.style.fontSize = "32px";
+      addIconContainer.style.color = "#fff";
+      addIconContainer.style.backgroundColor = "#42414d";
+      addIconContainer.style.display = "flex";
+      addIconContainer.style.alignItems = "center";
+      addIconContainer.style.justifyContent = "center";
+      addShortcutEl.appendChild(addIconContainer);
+    
+      const addLabel = document.createElement('span');
+      addLabel.textContent = "Añadir";
+      addShortcutEl.appendChild(addLabel);
+    
+      container.appendChild(addShortcutEl);
+    }
+    
+    function deleteShortcut(index) {
+      shortcutsData.splice(index, 1);
+      saveShortcuts();
+      renderShortcuts();
+    }
+    
+    // Función para capitalizar la primera letra
+    function capitalize(str) {
+      if (!str) return "";
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    
+    // Función addShortcut modificada para extraer el nombre del sitio y capitalizar la primera letra
+    function addShortcut() {
+      const url = prompt("Introduce la URL del nuevo link:");
+      if (!url) return;
+      let validUrl;
+      try {
+        validUrl = new URL(url);
+      } catch(e) {
+        alert("URL no válida");
+        return;
+      }
+      // Extraer el hostname y quitar "www." si existe
+      let hostname = validUrl.hostname;
+      if (hostname.startsWith("www.")) {
+        hostname = hostname.slice(4);
+      }
+      // Extraer la primera parte del hostname y capitalizarla
+      let defaultName = hostname.split('.')[0];
+      defaultName = capitalize(defaultName);
+    
+      const name = prompt("Introduce el nombre para el link:", defaultName) || defaultName;
+      const newLink = { name: name, url: validUrl.href };
+      shortcutsData.push(newLink);
+      saveShortcuts();
+      renderShortcuts();
+    }
+    
+    /* =====================================
+       Resto de funcionalidades (background, menú, navegación, etc.)
+       ===================================== */
+    
+    /* Cambio de fondo personalizado con persistencia */
+    const backgroundDiv = document.getElementById('background');
+    window.addEventListener('load', () => {
+      const savedBackground = localStorage.getItem('customBackground');
+      if (savedBackground) {
+        const bgData = JSON.parse(savedBackground);
+        if (bgData.type === 'color') {
+          backgroundDiv.style.backgroundImage = '';
+          backgroundDiv.style.backgroundColor = bgData.value;
+        } else if (bgData.type === 'image') {
+          backgroundDiv.style.backgroundImage = `url('${bgData.value}')`;
+          backgroundDiv.style.backgroundColor = 'transparent';
+          backgroundDiv.style.backgroundSize = 'cover';
+          backgroundDiv.style.backgroundPosition = 'center';
+        }
+      }
+      // Inicializa el motor de búsqueda seleccionado (por defecto Google)
+      selectedEngine = localStorage.getItem('searchEngine') || 'google';
+      updateEngineSelection();
+      // Cargar y renderizar shortcuts
+      loadShortcuts();
+      renderShortcuts();
+    });
+    
+    /* Menú lateral para seleccionar fondo y motor de búsqueda */
+    const sideMenu = document.getElementById('sideMenu');
+    const customizeBtn = document.getElementById('customizeBtn');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    
+    customizeBtn.addEventListener('click', () => {
+      sideMenu.classList.add('open');
+      const firstMenuItem = sideMenu.querySelector('.colorOption, .imageOption, .engineOption, #closeMenuBtn');
+      if(firstMenuItem) firstMenuItem.focus();
+    });
+    
+    closeMenuBtn.addEventListener('click', () => {
+      sideMenu.classList.remove('open');
+      customizeBtn.focus();
+    });
+    
+    document.addEventListener('click', function(e) {
+      if (sideMenu.classList.contains('open') && 
+          !sideMenu.contains(e.target) && 
+          !customizeBtn.contains(e.target)) {
+        sideMenu.classList.remove('open');
       }
     });
-
-    // Inicializa la carga de iconos
-    loadIcons();
+    
+    document.querySelectorAll('.colorOption, .imageOption').forEach(option => {
+      option.addEventListener('click', () => {
+        const bgType = option.getAttribute('data-bg-type');
+        const bgValue = option.getAttribute('data-bg-value');
+        if(bgType === 'color'){
+          backgroundDiv.style.backgroundImage = '';
+          backgroundDiv.style.backgroundColor = bgValue;
+        } else if(bgType === 'image'){
+          backgroundDiv.style.backgroundImage = `url('${bgValue}')`;
+          backgroundDiv.style.backgroundColor = 'transparent';
+          backgroundDiv.style.backgroundSize = 'cover';
+          backgroundDiv.style.backgroundPosition = 'center';
+        }
+        const bgData = { type: bgType, value: bgValue };
+        localStorage.setItem('customBackground', JSON.stringify(bgData));
+        sideMenu.classList.remove('open');
+        customizeBtn.focus();
+      });
+    });
+    
+    let selectedEngine = 'google';
+    const engineOptionElements = document.querySelectorAll('.engineOption');
+    
+    engineOptionElements.forEach(option => {
+      option.addEventListener('click', function() {
+        selectedEngine = this.getAttribute('data-engine');
+        localStorage.setItem('searchEngine', selectedEngine);
+        updateEngineSelection();
+      });
+    });
+    
+    function updateEngineSelection() {
+      engineOptionElements.forEach(option => {
+        if(option.getAttribute('data-engine') === selectedEngine) {
+          option.classList.add('selected');
+        } else {
+          option.classList.remove('selected');
+        }
+      });
+    }
+    
+    /* Funcionalidad del buscador */
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
+    
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = searchInput.value.trim();
+      if (query) {
+        let url = "";
+        if (selectedEngine === "google") {
+          url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        } else if (selectedEngine === "duckduckgo") {
+          url = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+        } else if (selectedEngine === "bing") {
+          url = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+        }
+        window.location.href = url;
+      }
+    });
+    
+    /* Permitir que, en los elementos del menú, Enter (o Space) active su acción */
+    const menuInteractiveItems = sideMenu.querySelectorAll('.colorOption, .imageOption, .engineOption, #closeMenuBtn');
+    menuInteractiveItems.forEach(item => {
+      item.addEventListener('keydown', function(e) {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.click();
+        }
+      });
+    });
+    
+    /* Navegación por teclado entre elementos focusables */
+    document.addEventListener('keydown', function(e) {
+      // Si se presionan alguna de las flechas...
+      if (['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(e.key)) {
+        const active = document.activeElement;
+        // Si el menú lateral está abierto y el foco NO está dentro del menú, forzamos que el foco permanezca en él
+        if (sideMenu.classList.contains('open') && !sideMenu.contains(active)) {
+          e.preventDefault();
+          sideMenu.querySelector('.colorOption, .imageOption, .engineOption, #closeMenuBtn').focus();
+          return;
+        }
+        // Si el menú lateral está abierto y el foco está en él, navegar en el menú
+        if (sideMenu.classList.contains('open') && sideMenu.contains(active)) {
+          e.preventDefault();
+          const menuItems = Array.from(sideMenu.querySelectorAll('.colorOption, .imageOption, .engineOption, #closeMenuBtn'));
+          const rows = [];
+          menuItems.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            let found = rows.find(r => Math.abs(r.top - rect.top) < 10);
+            if(found) {
+              found.items.push(item);
+            } else {
+              rows.push({ top: rect.top, items: [item] });
+            }
+          });
+          rows.sort((a, b) => a.top - b.top);
+          rows.forEach(row => {
+            row.items.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+          });
+          let currentRowIndex = -1, currentColIndex = -1;
+          const currentRect = active.getBoundingClientRect();
+          rows.forEach((row, rowIndex) => {
+            if (row.items.includes(active)) {
+              currentRowIndex = rowIndex;
+              currentColIndex = row.items.indexOf(active);
+            }
+          });
+          if (currentRowIndex === -1) return;
+          if (e.key === 'ArrowLeft') {
+            if (currentColIndex > 0) {
+              rows[currentRowIndex].items[currentColIndex - 1].focus();
+            }
+          } else if (e.key === 'ArrowRight') {
+            if (currentColIndex < rows[currentRowIndex].items.length - 1) {
+              rows[currentRowIndex].items[currentColIndex + 1].focus();
+            }
+          } else if (e.key === 'ArrowUp') {
+            if (currentRowIndex > 0) {
+              const prevRow = rows[currentRowIndex - 1];
+              const currentCenterX = currentRect.left + currentRect.width / 2;
+              const target = prevRow.items.reduce((prev, curr) => {
+                const currRect = curr.getBoundingClientRect();
+                const currCenterX = currRect.left + currRect.width / 2;
+                const prevRect = prev.getBoundingClientRect();
+                const prevCenterX = prevRect.left + prevRect.width / 2;
+                return Math.abs(currCenterX - currentCenterX) < Math.abs(prevCenterX - currentCenterX) ? curr : prev;
+              });
+              target.focus();
+            }
+          } else if (e.key === 'ArrowDown') {
+            if (currentRowIndex === rows.length - 1) {
+              // No permitimos que el foco salga del menú
+            } else {
+              const nextRow = rows[currentRowIndex + 1];
+              const currentCenterX = currentRect.left + currentRect.width / 2;
+              const target = nextRow.items.reduce((prev, curr) => {
+                const currRect = curr.getBoundingClientRect();
+                const currCenterX = currRect.left + currRect.width / 2;
+                const prevRect = prev.getBoundingClientRect();
+                const prevCenterX = prevRect.left + prevRect.width / 2;
+                return Math.abs(currCenterX - currentCenterX) < Math.abs(prevCenterX - currentCenterX) ? curr : prev;
+              });
+              target.focus();
+            }
+          }
+        }
+        // Si el foco está en un shortcut, usar navegación en grid
+        else if (active.classList.contains('shortcut')) {
+          e.preventDefault();
+          const shortcuts = Array.from(document.querySelectorAll('.shortcut'));
+          const rows = [];
+          shortcuts.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            let found = rows.find(r => Math.abs(r.top - rect.top) < 10);
+            if(found) {
+              found.items.push(item);
+            } else {
+              rows.push({ top: rect.top, items: [item] });
+            }
+          });
+          rows.sort((a, b) => a.top - b.top);
+          rows.forEach(row => {
+            row.items.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+          });
+          let currentRowIndex = -1, currentColIndex = -1;
+          const currentRect = active.getBoundingClientRect();
+          rows.forEach((row, rowIndex) => {
+            if (row.items.includes(active)) {
+              currentRowIndex = rowIndex;
+              currentColIndex = row.items.indexOf(active);
+            }
+          });
+          if (currentRowIndex === -1) return;
+          if (e.key === 'ArrowLeft') {
+            if (currentColIndex > 0) {
+              rows[currentRowIndex].items[currentColIndex - 1].focus();
+            }
+          } else if (e.key === 'ArrowRight') {
+            if (currentColIndex < rows[currentRowIndex].items.length - 1) {
+              rows[currentRowIndex].items[currentColIndex + 1].focus();
+            }
+          } else if (e.key === 'ArrowUp') {
+            if (currentRowIndex === 0) {
+              document.getElementById('searchInput').focus();
+            } else {
+              const prevRow = rows[currentRowIndex - 1];
+              const currentCenterX = currentRect.left + currentRect.width / 2;
+              const target = prevRow.items.reduce((prev, curr) => {
+                const currRect = curr.getBoundingClientRect();
+                const currCenterX = currRect.left + currRect.width / 2;
+                const prevRect = prev.getBoundingClientRect();
+                const prevCenterX = prevRect.left + prevRect.width / 2;
+                return Math.abs(currCenterX - currentCenterX) < Math.abs(prevCenterX - currentCenterX) ? curr : prev;
+              });
+              target.focus();
+            }
+          } else if (e.key === 'ArrowDown') {
+            if (currentRowIndex === rows.length - 1) {
+              const focusableItems = Array.from(document.querySelectorAll('#searchInput, .shortcut, #customizeBtn'));
+              let currentIndex = focusableItems.indexOf(active);
+              if (currentIndex === -1) currentIndex = 0;
+              const nextIndex = (currentIndex + 1) % focusableItems.length;
+              focusableItems[nextIndex].focus();
+            } else {
+              const nextRow = rows[currentRowIndex + 1];
+              const currentCenterX = currentRect.left + currentRect.width / 2;
+              const target = nextRow.items.reduce((prev, curr) => {
+                const currRect = curr.getBoundingClientRect();
+                const currCenterX = currRect.left + currRect.width / 2;
+                const prevRect = prev.getBoundingClientRect();
+                const prevCenterX = prevRect.left + prevRect.width / 2;
+                return Math.abs(currCenterX - currentCenterX) < Math.abs(prevCenterX - currentCenterX) ? curr : prev;
+              });
+              target.focus();
+            }
+          }
+        }
+        // Navegación lineal para el resto
+        else {
+          const focusableItems = Array.from(document.querySelectorAll('#searchInput, .shortcut, #customizeBtn'));
+          let currentIndex = focusableItems.indexOf(active);
+          if (currentIndex === -1 && focusableItems.length > 0) {
+            focusableItems[0].focus();
+            currentIndex = 0;
+          }
+          e.preventDefault();
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            const nextIndex = (currentIndex + 1) % focusableItems.length;
+            focusableItems[nextIndex].focus();
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            const prevIndex = (currentIndex - 1 + focusableItems.length) % focusableItems.length;
+            focusableItems[prevIndex].focus();
+          }
+        }
+      }
+    });
+    
+    /* =====================================
+       Cerrar el menú lateral con la tecla "Esc"
+       ===================================== */
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && sideMenu.classList.contains('open')) {
+        sideMenu.classList.remove('open');
+        customizeBtn.focus();
+      }
+    });
   </script>
 </body>
 </html>
